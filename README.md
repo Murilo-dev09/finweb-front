@@ -1,16 +1,74 @@
-# React + Vite
+# 💰 FinWeb - Gestão Financeira Pessoal
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+O **FinWeb** é uma aplicação web moderna para controle financeiro pessoal. Ele permite que os usuários registrem suas receitas e despesas, visualizem um resumo dinâmico do seu saldo e filtrem suas movimentações por categoria, tudo em uma interface limpa e responsiva.
 
-Currently, two official plugins are available:
+Este é o repositório do **Front-end** da aplicação, construído para se comunicar com uma API Restful em Spring Boot.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+---
 
-## React Compiler
+## 🚀 Tecnologias Utilizadas
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+O projeto foi desenvolvido utilizando as seguintes tecnologias:
 
-## Expanding the ESLint configuration
+* **[React](https://reactjs.org/)** - Biblioteca JavaScript para construção de interfaces.
+* **[Vite](https://vitejs.dev/)** - Ferramenta de build super rápida para projetos web.
+* **[Tailwind CSS](https://tailwindcss.com/)** - Framework CSS utilitário para estilização rápida e responsiva.
+* **[React Router DOM](https://reactrouter.com/)** - Gerenciamento de rotas e navegação da aplicação.
+* **[Axios](https://axios-http.com/)** - Cliente HTTP para comunicação com a API (Back-end).
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+---
+
+## ✨ Funcionalidades
+
+* **Autenticação JWT:** Login e Cadastro de usuários com proteção de rotas privadas.
+* **Dashboard Interativo:** Resumo em tempo real de Receitas, Despesas e Saldo Total.
+* **Gestão de Transações (CRUD):** * Criação de novas transações (Modal interativo).
+    * Exclusão de transações existentes.
+    * Listagem paginada e ordenada.
+* **Filtros Dinâmicos:** Filtragem de transações por categorias (Mercado, Salário, Alimentação, etc.) com recarregamento automático da lista.
+* **Formatação Nativa:** Datas e valores monetários formatados nativamente para o padrão Brasileiro (pt-BR).
+
+---
+
+## 📁 Estrutura do Projeto
+
+A arquitetura do projeto foi pensada para ser escalável e de fácil manutenção:
+
+```text
+src/
+ ├── assets/      # Imagens estáticas e logos (fundo-dash.png, etc)
+ ├── components/  # Componentes reutilizáveis (Inputs, Modais, Proteção de Rota)
+ ├── contexts/    # Context API (Gerenciamento global de Sessão e Autenticação)
+ ├── pages/       # Páginas da aplicação (Login, Cadastro, Dashboard)
+ ├── services/    # Comunicação com a API (authService, transacaoService)
+ ├── App.jsx      # Configuração central de rotas
+ └── main.jsx     # Ponto de entrada da aplicação
+
+
+ ⚙️ Como executar o projeto localmente
+Pré-requisitos
+Antes de começar, você precisará ter instalado em sua máquina o Node.js e ter o repositório do Back-end do FinWeb (Spring Boot) rodando na porta http://localhost:8080.
+
+Passo a Passo
+Clone este repositório:
+
+Bash
+git clone https://github.com/Murilo-dev09/finweb-front.git
+Acesse a pasta do projeto:
+
+Bash
+cd finweb-front
+Instale as dependências:
+
+Bash
+npm install
+Inicie o servidor de desenvolvimento:
+
+Bash
+npm run dev
+O servidor iniciará localmente (geralmente na porta http://localhost:5173). Acesse o link no seu navegador para ver a aplicação rodando!
+
+👨‍💻 Desenvolvedor
+Criado e desenvolvido por Murilo.
+
+Projeto focado no aperfeiçoamento de habilidades em desenvolvimento Full-Stack (React + Spring Boot).
