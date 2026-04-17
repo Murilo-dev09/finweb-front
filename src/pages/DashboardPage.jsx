@@ -2,7 +2,6 @@ import { useState, useEffect, useContext } from "react";
 import { AuthContext } from "../contexts/AuthContext";
 import { transacaoService } from "../services/transacaoService";
 import { ModalNovaTransacao } from "../components/ModalNovaTransacao";
-import imagemFundo from '../assets/fundo-dash.png';
 
 export function DashboardPage() {
   const { usuario, efetuarLogout } = useContext(AuthContext);
