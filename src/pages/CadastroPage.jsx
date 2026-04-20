@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { authService } from '../services/AuthService';
+import { authService } from '../services/authService';
 import { InputPadrao } from '../components/InputPadrao';
 
 export function CadastroPage() {
