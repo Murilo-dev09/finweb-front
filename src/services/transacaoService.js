@@ -24,5 +24,10 @@ export const transacaoService = {
     listarPorCategoria: async(categoria, pagina = 0) => {
         const response = await api.get(`transacoes/por-categoria?categoria=${categoria}&page=${pagina}&size=10&sort=data,desc`);
         return response.data;
+    },
+
+    alterarTransacao: async(dadosAlterartransacao) => {
+        const response = await api.put('/transacoes', dadosAlterartransacao)
+        return response.data;
     }
 };

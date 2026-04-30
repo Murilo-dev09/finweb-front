@@ -2,6 +2,7 @@ import { useState, useEffect, useContext } from "react";
 import { AuthContext } from "../contexts/AuthContext";
 import { transacaoService } from "../services/transacaoService";
 import { ModalNovaTransacao } from "../components/ModalNovaTransacao";
+import { ModalAlterarTransacao } from "../components/ModalAlterarTransacao";
 
 export function DashboardPage() {
   const { usuario, efetuarLogout } = useContext(AuthContext);
@@ -14,6 +15,8 @@ export function DashboardPage() {
   const [transacoes, setTransacoes] = useState([]);
   const [loading, setLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isModalAlterarOpen, setIsModalAlterarOpen] = useState(false);
+  const [memoria, setMemoria] = useState(null);
   const [filtroCategoria, setFiltroCategoria] = useState("");
 
   async function carregarDados() {
@@ -119,24 +122,25 @@ export function DashboardPage() {
                 onChange={(e) => setFiltroCategoria(e.target.value)}
                 className="px-4 py-2 border border-gray-300 rounded-lg text-sm text-gray-700 outline-none focus:ring-2 focus:ring-blue-500 bg-white"
               >
-                <option value="">TODAS AS CATEGORIAS</option>
-                <option value="MERCADO">MERCADO</option>
+                <option value="AGUA">AGUA</option>
                 <option value="ALIMENTACAO">ALIMENTACAO</option>
-                <option value="LAZER">LAZER</option>
-                <option value="TRANSPORTE">TRANSPORTE</option>
-                <option value="SAUDE">SAUDE</option>
                 <option value="ALUGUEL">ALUGUEL</option>
                 <option value="ASSINATURA">ASSINATURA</option>
-                <option value="FACULDADE">FACULDADE</option>
+                <option value="CAIXINHA">CAIXINHA</option>
                 <option value="COMPRAS_INTERNET">COMPRAS_INTERNET</option>
                 <option value="ENERGIA">ENERGIA</option>
-                <option value="AGUA">AGUA</option>
+                <option value="FACULDADE">FACULDADE</option>
                 <option value="GASOLINA">GASOLINA</option>
-                <option value="OUTROS">OUTROS</option>
                 <option value="INTERNET">INTERNET</option>
-                <option value="VALE">VALE</option>
-                <option value="SALARIO">SALARIO</option>
+                <option value="LAZER">LAZER</option>
+                <option value="MERCADO">MERCADO</option>
+                <option value="OUTROS">OUTROS</option>
+                <option value="POUPANCA">POUPANCA</option>
                 <option value="RENDA_EXTRA">RENDA_EXTRA</option>
+                <option value="SALARIO">SALARIO</option>
+                <option value="SAUDE">SAUDE</option>
+                <option value="TRANSPORTE">TRANSPORTE</option>
+                <option value="VALE">VALE</option>
                 <option value="VENDA">VENDA</option>
               </select>
             </div>
@@ -189,10 +193,20 @@ export function DashboardPage() {
 
                     <button
                       onClick={() => handleExcluir(transacao.id)}
-                      className="text-gray-400 hover:text-red-600 opacity-0 group-hover:opacity-100 transition-opacity p-2"
+                      className="text-gray-400 hover:text-red-600 opacity-0 group-hover:opacity-100 transition-opacity p-1"
                       title="Excluir Transação"
                     >
                       🗑️
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setMemoria(transacao);
+                        setIsModalAlterarOpen(true);
+                      }}
+                      className="text-gray opacity-0 group-hover:opacity-100 transition-opacity "
+                    >
+                      ✏️
                     </button>
                   </div>
                 </li>
@@ -201,6 +215,16 @@ export function DashboardPage() {
           </ul>
         </div>
       </div>
+
+      <ModalAlterarTransacao
+        transacaoSelecionada={memoria}
+        isOpen={isModalAlterarOpen}
+        onClose={() => setIsModalAlterarOpen(false)}
+        onSuccess={() => {
+          setIsModalAlterarOpen(false);
+          carregarDados();
+        }}
+      />
 
       <ModalNovaTransacao
         isOpen={isModalOpen}

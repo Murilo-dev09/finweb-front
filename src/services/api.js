@@ -1,5 +1,5 @@
 import axios from 'axios';
 
 export const api = axios.create({
-  baseURL: 'https://finweb-qc82.onrender.com',
+  baseURL: 'http://localhost:8080',
 });

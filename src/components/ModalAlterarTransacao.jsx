@@ -1,15 +1,27 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { transacaoService } from "../services/transacaoService";
 
-export function ModalNovaTransacao({ isOpen, onClose, onSuccess }) {
+export function ModalAlterarTransacao({
+  isOpen,
+  onClose,
+  onSuccess,
+  transacaoSelecionada,
+}) {
+  const [id, setId] = useState(0);
   const [descricao, setDescricao] = useState("");
-  const [valor, setValor] = useState("");
-  const [data, setData] = useState("");
-  const [categoria, setCategoria] = useState("OUTROS");
-  const [tipoTransacao, setTipoTransacao] = useState("DESPESA");
-
+  const [valor, setValor] = useState(0);
+  const [categoria, setCategoria] = useState("");
   const [loading, setLoading] = useState(false);
   const [erro, setErro] = useState("");
+
+  useEffect(() => {
+    if (transacaoSelecionada) {
+      setId(transacaoSelecionada.id);
+      setDescricao(transacaoSelecionada.descricao);
+      setValor(transacaoSelecionada.valor);
+      setCategoria(transacaoSelecionada.categoria);
+    }
+  }, [transacaoSelecionada]);
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -17,24 +29,24 @@ export function ModalNovaTransacao({ isOpen, onClose, onSuccess }) {
     setErro("");
 
     try {
-      const dadosTransacao = {
+      const dadosAlterarTransacao = {
+        id,
         descricao,
         valor: Number(valor),
-        data: data + ":00",
         categoria,
-        tipoTransacao,
       };
 
-      await transacaoService.criarTransacao(dadosTransacao);
+      await transacaoService.alterarTransacao(dadosAlterarTransacao);
 
+      setId(0);
       setDescricao("");
-      setValor("");
-      setData("");
+      setValor(0);
+      setCategoria("");
 
       onSuccess();
     } catch (error) {
-      setErro("Erro ao salvar transação. Verifique os dados.");
-      console.error(error);
+      setErro("Erro ao alterar transação");
+      console.log(error);
     } finally {
       setLoading(false);
     }
@@ -44,12 +56,14 @@ export function ModalNovaTransacao({ isOpen, onClose, onSuccess }) {
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-      <div className="bg-white rounded-xl shadow-lg max-w-md w-full p-6 ">
-        <div className="flex justify-between items-center mb-4">
-          <h2 className="text-xl font-bold text-gray-800">Nova Transação</h2>
+      <div className="bg-white rounded-xl shadow-lg max-w-md w-full p-6">
+        <div className="flex justify-between mb-4">
+          <h2 className="text-xl font-bold text-gray-800">
+            Alterando Transação
+          </h2>
           <button
-            onClick={onClose}
             className="text-gray-500 hover:text-gray-700 text-2xl font-bold"
+            onClick={onClose}
           >
             &times;
           </button>
@@ -64,16 +78,15 @@ export function ModalNovaTransacao({ isOpen, onClose, onSuccess }) {
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
-              Descrição
+              Desricao
             </label>
             <input
               type="text"
               required
               value={descricao}
               onChange={(e) => setDescricao(e.target.value)}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus-ring-blue-500 outline-none"
-              placeholder="Ex: Compras Farmácia"
-            />
+              className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus-ring-blue-500 outline-none"
+            ></input>
           </div>
 
           <div className="grid grid-cols-2 gap-4">
@@ -88,46 +101,18 @@ export function ModalNovaTransacao({ isOpen, onClose, onSuccess }) {
                 value={valor}
                 onChange={(e) => setValor(e.target.value)}
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus-ring-blue-500 outline-none"
-                placeholder="Ex: 0.00"
-              />
+              ></input>
             </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Data
-              </label>
-              <input
-                type="datetime-local"
-                required
-                value={data}
-                onChange={(e) => setData(e.target.value)}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus-ring-blue-500 outline-none"
-                placeholder="Ex: 0.00"
-              />
-            </div>
-          </div>
 
-          <div className="grid grid-cols-2 gap-4">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Tipo
-              </label>
-              <select
-                value={tipoTransacao}
-                onChange={(e) => setTipoTransacao(e.target.value)}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg outline-none"
-              >
-                <option value="DESPESA">DESPESA (-)</option>
-                <option value="RECEITA">RECEITA (+)</option>
-              </select>
-            </div>
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
                 Categoria
               </label>
               <select
                 value={categoria}
+                required
                 onChange={(e) => setCategoria(e.target.value)}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg outline-none"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus-ring-blue-500 outline-none"
               >
                 <option value="AGUA">AGUA</option>
                 <option value="ALIMENTACAO">ALIMENTACAO</option>
@@ -157,7 +142,7 @@ export function ModalNovaTransacao({ isOpen, onClose, onSuccess }) {
             <button
               type="button"
               onClick={onClose}
-              className="w-full border border-gray-300 text-gray-700 font-semibold py-2.5 rounded-lg hover:bg-gray-50"
+              className="w-full border border-gray-300 rounded-lg text-gray-700 font-semibold py-2.5"
             >
               Cancelar
             </button>
@@ -167,7 +152,7 @@ export function ModalNovaTransacao({ isOpen, onClose, onSuccess }) {
               disabled={loading}
               className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2.5 rounded-lg disable:opacity-70"
             >
-              {loading ? "Salvando" : "Salvar"}
+              {loading ? "Confirmando Alterações" : "Confirmar Alterações"}
             </button>
           </div>
         </form>
