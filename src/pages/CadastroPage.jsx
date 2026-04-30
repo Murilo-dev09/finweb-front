@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { authService } from '../services/authService';
 import { InputPadrao } from '../components/InputPadrao';
-import { authService } from '../services/authService';
 
 export function CadastroPage() {
   const [email, setEmail] = useState('');
