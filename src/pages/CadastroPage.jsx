@@ -1,5 +1,9 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+<<<<<<< HEAD
+=======
+import { authService } from '../services/authService';
+>>>>>>> 3a4083040058ede8f8cf136846c8c80cdf959fb7
 import { InputPadrao } from '../components/InputPadrao';
 import { authService } from '../services/authService';
 
