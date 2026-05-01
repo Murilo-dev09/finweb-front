@@ -121,7 +121,8 @@ export function DashboardPage() {
                 value={filtroCategoria}
                 onChange={(e) => setFiltroCategoria(e.target.value)}
                 className="px-4 py-2 border border-gray-300 rounded-lg text-sm text-gray-700 outline-none focus:ring-2 focus:ring-blue-500 bg-white"
-              >
+              > 
+                <option value="">TODAS AS CATEGORIAS</option>
                 <option value="AGUA">AGUA</option>
                 <option value="ALIMENTACAO">ALIMENTACAO</option>
                 <option value="ALUGUEL">ALUGUEL</option>
