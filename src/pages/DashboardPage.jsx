@@ -3,6 +3,7 @@ import { AuthContext } from "../contexts/AuthContext";
 import { transacaoService } from "../services/transacaoService";
 import { ModalNovaTransacao } from "../components/ModalNovaTransacao";
 import { ModalAlterarTransacao } from "../components/ModalAlterarTransacao";
+import { BaixarRelatorio } from "../components/BaixarRelatorio";
 
 export function DashboardPage() {
   const { usuario, efetuarLogout } = useContext(AuthContext);
@@ -111,17 +112,17 @@ export function DashboardPage() {
         </div>
 
         <div className="bg-white rounded-xl border border-gray-100 overflow-hidden">
-          <div className="p-6 border-b border-gray-100 flex justify-between items-center">
+          <div className="p-6 border-b border-gray-100 flex justify-between items-center flex-wrap gap-4">
             <h2 className="text-lg font-bold text-gray-800">
               Últimas Transações
             </h2>
 
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-4 flex-wrap">
               <select
                 value={filtroCategoria}
                 onChange={(e) => setFiltroCategoria(e.target.value)}
                 className="px-4 py-2 border border-gray-300 rounded-lg text-sm text-gray-700 outline-none focus:ring-2 focus:ring-blue-500 bg-white"
-              > 
+              >
                 <option value="">TODAS AS CATEGORIAS</option>
                 <option value="AGUA">AGUA</option>
                 <option value="ALIMENTACAO">ALIMENTACAO</option>
@@ -145,6 +146,9 @@ export function DashboardPage() {
                 <option value="VENDA">VENDA</option>
               </select>
             </div>
+
+            <BaixarRelatorio />
+
             <button
               onClick={() => setIsModalOpen(true)}
               className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700"
