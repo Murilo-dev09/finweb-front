@@ -7,10 +7,14 @@ export const transacaoService = {
         return response.data;
     },
 
-    listarTransacoes: async(pagina = 0) => {
-        const response = await api.get(`/transacoes?page=${pagina}&size=10&sort=data,asc`);
-        return response.data;
-    },
+    listarTransacoes: async(pagina) => {
+        const response = await api.get(`/transacoes?page=${pagina}&size=10&sort=data,asc`, {
+            params: {
+                page: pagina
+            }
+        });
+        return response.data;                                                                                           
+    },  
 
     criarTransacao: async(dadosTransacao) => {
         const response = await api.post('/transacoes', dadosTransacao);

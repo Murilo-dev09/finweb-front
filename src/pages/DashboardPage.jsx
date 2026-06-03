@@ -19,6 +19,8 @@ export function DashboardPage() {
   const [isModalAlterarOpen, setIsModalAlterarOpen] = useState(false);
   const [memoria, setMemoria] = useState(null);
   const [filtroCategoria, setFiltroCategoria] = useState("");
+  const [pagina, setPagina] = useState(0);
+  const [totalPaginas, setTotalPaginas] = useState(0);
 
   async function carregarDados() {
     setLoading(true);
@@ -28,15 +30,17 @@ export function DashboardPage() {
       setResumo(dadosResumo);
 
       if (filtroCategoria === "") {
-        const dadosPagina = await transacaoService.listarTransacoes(0);
+        const dadosPagina = await transacaoService.listarTransacoes(pagina);
         setTransacoes(dadosPagina.content);
+        setTotalPaginas(dadosPagina.totalPages);
       } else {
         const dadosCategoria = await transacaoService.listarPorCategoria(
           filtroCategoria,
-          0,
+          pagina,
         );
 
         setTransacoes(dadosCategoria.listarCategoria.content);
+        setTotalPaginas(dadosCategoria.listarCategoria.totalPages);
       }
     } catch (error) {
       console.error(error);
@@ -63,7 +67,7 @@ export function DashboardPage() {
 
   useEffect(() => {
     carregarDados();
-  }, [filtroCategoria]);
+  }, [filtroCategoria, pagina]);
 
   if (loading)
     return (
@@ -120,7 +124,10 @@ export function DashboardPage() {
             <div className="flex items-center gap-4 flex-wrap">
               <select
                 value={filtroCategoria}
-                onChange={(e) => setFiltroCategoria(e.target.value)}
+                onChange={(e) => {
+                  setFiltroCategoria(e.target.value);
+                  setPagina(0);
+                }}
                 className="px-4 py-2 border border-gray-300 rounded-lg text-sm text-gray-700 outline-none focus:ring-2 focus:ring-blue-500 bg-white"
               >
                 <option value="">TODAS AS CATEGORIAS</option>
@@ -218,6 +225,28 @@ export function DashboardPage() {
               ))
             )}
           </ul>
+
+          <div className="flex justify-between items-center p-6 border-t border-gray-100 bg-gray-50 rounded-b-xl">
+              <button
+                onClick={() => setPagina(pagina - 1)}
+                disabled={pagina === 0}
+                className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+              >
+                Anterior
+              </button>
+
+              <span className="text-sm font-medium text-gray-600">
+                Página {pagina + 1} de {totalPaginas === 0 ? 1 : totalPaginas}
+              </span>
+
+              <button
+                onClick={() => setPagina(pagina + 1)}
+                disabled={pagina >= totalPaginas - 1}
+                className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+              >
+                Próxima
+              </button>
+          </div>
         </div>
       </div>
 
